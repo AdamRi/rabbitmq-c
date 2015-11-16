@@ -6,8 +6,14 @@ environment:
     - GENERATOR: Visual Studio 12 Win64
     - GENERATOR: Visual Studio 12
 
+install:
+  - ps: Start-FileDownload 'http://slproweb.com/download/Win32OpenSSL-1_0_2d.exe'
+  - ps: Start-Process "Win32OpenSSL-1_0_2d.exe" -ArgumentList "/silent /verysilent /sp- /suppressmsgboxes" -Wait
+  - ps: Start-FileDownload 'http://slproweb.com/download/Win64OpenSSL-1_0_2d.exe'
+  - ps: Start-Process "Win64OpenSSL-1_0_2d.exe" -ArgumentList "/silent /verysilent /sp- /suppressmsgboxes" -Wait
+
 before_build:
-  - cmake -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DBUILD_TESTS=ON -DENABLE_SSL_SUPPORT=False -G"%GENERATOR%" .
+  - cmake -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DBUILD_TESTS=ON -DENABLE_SSL_SUPPORT=True -G"%GENERATOR%" .
 
 build:
   project: ALL_BUILD.vcxproj
